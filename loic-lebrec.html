@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loïc Lebrec — Cyclist · Researcher · Journalist</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--fg:#f0ede8;--accent:#556E73;--accent2:#556E73;--muted:#A4B7BF;--card:#141414;--card-border:#222;--section-gap:clamp(4rem,8vw,8rem)}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;overflow-x:hidden}
+
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+@media(max-width:900px){.hero{grid-template-columns:1fr;min-height:auto}}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(232,73,29,.12) 0%,transparent 70%),radial-gradient(ellipse 40% 60% at 20% 80%,rgba(255,107,61,.06) 0%,transparent 60%);pointer-events:none;z-index:1}
+.hero-grid-lines{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(var(--fg) 1px,transparent 1px),linear-gradient(90deg,var(--fg) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+.hero-content{display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(2rem,5vw,6rem);position:relative;z-index:2}
+.hero-photo-side{position:relative;z-index:2;overflow:hidden;background:linear-gradient(135deg,var(--card),rgba(232,73,29,.08));display:flex;align-items:center;justify-content:center;min-height:400px}
+.photo-upload-hint{text-align:center;color:var(--muted);padding:3rem}
+.photo-upload-hint .big-icon{font-size:4rem;opacity:.2;margin-bottom:1rem}
+.photo-upload-hint p{font-size:.85rem;line-height:1.8}
+.photo-upload-hint code{font-family:'JetBrains Mono',monospace;font-size:.7rem;background:rgba(255,255,255,.05);padding:.2rem .5rem;border-radius:3px}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem;opacity:0;animation:slideUp .8s ease forwards .2s}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(3.5rem,8vw,8rem);font-weight:900;line-height:.95;letter-spacing:-.03em;margin-bottom:1.5rem;opacity:0;animation:slideUp .8s ease forwards .4s}
+.hero h1 .accent{color:var(--accent)}
+.hero h1 .italic{font-style:italic;font-weight:400}
+.hero-sub{font-size:clamp(1rem,1.8vw,1.25rem);font-weight:300;color:var(--muted);max-width:550px;margin-bottom:3rem;opacity:0;animation:slideUp .8s ease forwards .6s}
+.hero-nav{display:flex;gap:.8rem;flex-wrap:wrap;opacity:0;animation:slideUp .8s ease forwards .8s}
+.hero-nav a{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--fg);text-decoration:none;padding:.7rem 1.5rem;border:1px solid var(--card-border);transition:all .3s ease;position:relative;overflow:hidden}
+.hero-nav a::before{content:'';position:absolute;bottom:0;left:0;width:100%;height:0;background:var(--accent);transition:height .3s ease;z-index:-1}
+.hero-nav a:hover{border-color:var(--accent);color:#fff}
+.hero-nav a:hover::before{height:100%}
+.hero-nav a.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.hero-nav a.primary:hover{background:var(--accent2);border-color:var(--accent2)}
+
+.section-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,5vw,4.5rem);font-weight:900;line-height:1.05;margin-bottom:1.5rem}
+
+.about-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--card-border);border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border)}
+.about-strip .stat{background:var(--bg);padding:2.5rem 1.5rem;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--accent);line-height:1}
+.stat-label{font-size:.78rem;color:var(--muted);margin-top:.5rem;letter-spacing:.05em}
+
+.about-intro{display:grid;grid-template-columns:auto 1fr;gap:4rem;padding:var(--section-gap) clamp(2rem,5vw,6rem);align-items:start}
+@media(max-width:768px){.about-intro{grid-template-columns:1fr}.about-intro .photo-placeholder{margin:0 auto}}
+.about-text p{color:var(--muted);font-size:1.05rem;line-height:1.85;margin-bottom:1.2rem}
+.about-text strong{color:var(--fg);font-weight:600}
+.photo-placeholder{width:100%;aspect-ratio:3/4;max-width:320px;background:linear-gradient(135deg,var(--card),rgba(232,73,29,.08));border:1px dashed var(--card-border);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:.8rem;text-align:center;gap:.5rem;padding:2rem}
+.photo-placeholder .icon{font-size:2.5rem;opacity:.3}
+
+.cycling-section{padding:var(--section-gap) clamp(2rem,5vw,6rem)}
+.cycling-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem}
+@media(max-width:768px){.cycling-grid{grid-template-columns:1fr}}
+.cycling-card{background:var(--card);border:1px solid var(--card-border);padding:2.5rem;position:relative;overflow:hidden;transition:all .4s ease}
+.cycling-card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.cycling-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--accent);transform:scaleY(0);transform-origin:bottom;transition:transform .4s ease}
+.cycling-card:hover::after{transform:scaleY(1)}
+.card-icon{font-size:2rem;margin-bottom:1rem}
+.card-title{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:.75rem}
+.card-desc{color:var(--muted);font-size:.95rem;line-height:1.7}
+.card-link{display:inline-block;margin-top:1.2rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .3s}
+.card-link:hover{border-color:var(--accent)}
+
+.events-section{padding:var(--section-gap) clamp(2rem,5vw,6rem);background:linear-gradient(180deg,var(--bg),rgba(232,73,29,.03) 50%,var(--bg))}
+.events-grid{display:grid;grid-template-columns:1fr;gap:3rem;margin-top:3rem}
+.event-card{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card);border:1px solid var(--card-border);overflow:hidden;transition:all .4s ease}
+.event-card:hover{border-color:var(--accent)}
+@media(max-width:768px){.event-card,.event-card.reverse{grid-template-columns:1fr}}
+.event-card.reverse{direction:rtl}
+.event-card.reverse>*{direction:ltr}
+.event-media{position:relative;min-height:300px;background:var(--bg);overflow:hidden}
+.event-media iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+.event-photo{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s ease}
+.event-card:hover .event-photo{transform:scale(1.05)}
+.event-photo-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(232,73,29,.05),var(--bg));color:var(--muted);font-size:.75rem;text-align:center;gap:.3rem}
+.event-photo-placeholder .big{font-size:2.5rem;opacity:.15}
+.event-content{padding:2.5rem;display:flex;flex-direction:column;justify-content:center}
+.event-badge{font-family:'JetBrains Mono',monospace;font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.8rem}
+.event-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;margin-bottom:.6rem;line-height:1.2}
+.event-desc{color:var(--muted);font-size:.9rem;line-height:1.7;margin-bottom:1rem}
+.event-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.event-tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:.3rem .6rem;border:1px solid var(--card-border)}
+
+.podcast-banner{margin:var(--section-gap) clamp(2rem,5vw,6rem);padding:3.5rem;background:linear-gradient(135deg,rgba(232,73,29,.15),rgba(255,107,61,.05)),var(--card);border:1px solid rgba(232,73,29,.3);display:grid;grid-template-columns:1fr auto;align-items:center;gap:3rem;position:relative;overflow:hidden}
+@media(max-width:768px){.podcast-banner{grid-template-columns:1fr}}
+.podcast-banner::before{content:'🎙';position:absolute;right:-40px;bottom:-40px;font-size:15rem;opacity:.04;pointer-events:none}
+.podcast-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.75rem}
+.podcast-tagline{color:var(--muted);font-size:1rem;font-style:italic;margin-bottom:1rem}
+.podcast-meta{font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.1em}
+.podcast-links{display:flex;flex-direction:column;gap:.75rem}
+.podcast-links a{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--fg);padding:.7rem 1.6rem;border:1px solid var(--card-border);text-align:center;transition:all .3s ease}
+.podcast-links a:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+
+.research-section{padding:var(--section-gap) clamp(2rem,5vw,6rem)}
+.research-timeline{margin-top:3rem;position:relative;padding-left:3rem}
+.research-timeline::before{content:'';position:absolute;left:0;top:0;width:1px;height:100%;background:linear-gradient(to bottom,var(--accent),var(--card-border))}
+.timeline-item{position:relative;padding-bottom:3rem}
+.timeline-item::before{content:'';position:absolute;left:-3rem;top:.5rem;width:9px;height:9px;background:var(--accent);border-radius:50%;box-shadow:0 0 0 4px var(--bg),0 0 0 5px var(--accent)}
+.timeline-date{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem}
+.timeline-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:.3rem}
+.timeline-org{font-size:.9rem;color:var(--muted);font-style:italic;margin-bottom:.5rem}
+.timeline-desc{color:var(--muted);font-size:.9rem;line-height:1.7;max-width:600px}
+
+.skills-section{padding:0 clamp(2rem,5vw,6rem) var(--section-gap)}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+.skill-block{background:var(--card);border:1px solid var(--card-border);padding:2rem;transition:all .3s ease}
+.skill-block:hover{border-color:var(--accent)}
+.skill-name{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.skill-items{display:flex;flex-wrap:wrap;gap:.5rem}
+.skill-tag{font-size:.8rem;color:var(--fg);padding:.35rem .8rem;border:1px solid var(--card-border);border-radius:2px}
+
+.lang-strip{display:flex;gap:1px;background:var(--card-border);border-top:1px solid var(--card-border);border-bottom:1px solid var(--card-border);overflow-x:auto}
+.lang-item{background:var(--bg);padding:1.8rem 2.5rem;text-align:center;flex:1;min-width:120px}
+.lang-flag{font-size:1.8rem;margin-bottom:.5rem}
+.lang-name{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+
+.brands-section{padding:var(--section-gap) clamp(2rem,5vw,6rem);text-align:center}
+.brands-text{color:var(--muted);font-size:1rem;max-width:600px;margin:0 auto 2.5rem;line-height:1.8}
+.brand-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:2rem;margin-top:2rem}
+.brand-badge{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);padding:.8rem 1.5rem;border:1px solid var(--card-border);transition:all .3s ease}
+.brand-badge:hover{color:var(--fg);border-color:var(--fg)}
+
+.cta-section{padding:var(--section-gap) clamp(2rem,5vw,6rem);text-align:center;position:relative}
+.cta-section::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(232,73,29,.08) 0%,transparent 70%);pointer-events:none}
+.cta-sub{color:var(--muted);font-size:1.05rem;margin-bottom:2.5rem}
+.cta-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.cta-links a{font-family:'JetBrains Mono',monospace;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--fg);padding:.85rem 2rem;border:1px solid var(--card-border);transition:all .3s ease}
+.cta-links a:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+.cta-links a.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cta-links a.primary:hover{background:var(--accent2);border-color:var(--accent2)}
+
+footer{padding:3rem clamp(2rem,5vw,6rem);border-top:1px solid var(--card-border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+footer span{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none;transition:color .3s}
+footer a:hover{color:var(--accent)}
+
+.sep{height:1px;background:linear-gradient(to right,transparent,var(--card-border),transparent);margin:0 clamp(2rem,5vw,6rem)}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{opacity:0;transform:translateY(20px);transition:all .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--card-border)}
+::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+</style>
+</head>
+<body>
+
+<!-- 
+  ╔══════════════════════════════════════════════════════════════════╗
+  ║  QUICK GUIDE — HOW TO ADD PHOTOS & VIDEOS                      ║
+  ╠══════════════════════════════════════════════════════════════════╣
+  ║                                                                ║
+  ║  🖼 PHOTOS — 3 easy options:                                    ║
+  ║                                                                ║
+  ║  1. Same folder: put photo.jpg next to this HTML, use          ║
+  ║     src="photo.jpg" or url('photo.jpg')                        ║
+  ║                                                                ║
+  ║  2. Imgur: upload at imgur.com → right-click → copy image URL  ║
+  ║     Use: src="https://i.imgur.com/XXXXX.jpg"                   ║
+  ║                                                                ║
+  ║  3. GitHub: push to a repo, use the raw URL                    ║
+  ║                                                                ║
+  ║  🎬 YOUTUBE VIDEOS — super easy:                                ║
+  ║                                                                ║
+  ║  1. Open your video on YouTube                                  ║
+  ║  2. Copy the video ID from the URL:                             ║
+  ║     youtube.com/watch?v=pKxMFwZjuUQ  ← this part               ║
+  ║  3. Replace the placeholder with:                               ║
+  ║     <iframe src="https://www.youtube.com/embed/pKxMFwZjuUQ"    ║
+  ║      allowfullscreen></iframe>                                  ║
+  ║                                                                ║
+  ║  Search for "REPLACE-ME" in this file to find all placeholders ║
+  ╚══════════════════════════════════════════════════════════════════╝
+-->
+
+<!-- ═══ HERO ═══ -->
+<section class="hero" id="top">
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-tag">Cyclist · Data Researcher · Cycling Journalist</div>
+    <h1>Loïc<br><span class="italic">Lebrec</span><span class="accent">.</span></h1>
+    <p class="hero-sub">Racing with WATT Cycling Club. Analyzing data at Paris Dauphine-PSL. Hosting Radio Fringale. Building tools that bridge sport, science &amp; storytelling.</p>
+    <nav class="hero-nav">
+      <a href="#cycling" class="primary">Cycling</a>
+      <a href="#events">Events</a>
+      <a href="#research">Research</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+  <!-- REPLACE-ME: Hero photo. Change the style to: background:url('your-photo.jpg') center/cover -->
+  <div class="hero-photo-side">
+    <div class="photo-upload-hint">
+      <div class="big-icon">🚴</div>
+      <p>Add your hero photo here<br><code>background: url('photo.jpg') center/cover</code></p>
+    </div>
+  </div>
+</section>
+
+<div class="about-strip">
+  <div class="stat"><div class="stat-num">6</div><div class="stat-label">Languages Spoken</div></div>
+  <div class="stat"><div class="stat-num">WATT</div><div class="stat-label">Cycling Club — Paris</div></div>
+  <div class="stat"><div class="stat-num">🎙</div><div class="stat-label">Radio Fringale Host</div></div>
+  <div class="stat"><div class="stat-num">PSL</div><div class="stat-label">Paris Dauphine University</div></div>
+</div>
+
+<!-- ═══ ABOUT ═══ -->
+<section class="about-intro" id="about">
+  <!-- REPLACE-ME: About portrait. Swap this div for: <img src="portrait.jpg" alt="Loïc" style="width:100%;max-width:320px;object-fit:cover;aspect-ratio:3/4;border:1px solid var(--card-border)"> -->
+  <div class="photo-placeholder">
+    <div class="icon">📸</div>
+    <span>Your portrait here</span>
+  </div>
+  <div class="about-text fade-in">
+    <div class="section-label">Who I Am</div>
+    <div class="section-title">Where Data<br>Meets the <span style="color:var(--accent)">Peloton</span></div>
+    <p>I'm <strong>Loïc Lebrec</strong> — a cyclist, data researcher, and cycling journalist based in Paris. I race club-level competitions with <strong>WATT Cycling Club</strong>, one of the most progressive cycling clubs in France, championing gender diversity in the peloton.</p>
+    <p>My academic work sits at <strong>Paris Dauphine-PSL</strong>, where I focus on data analysis and research — from energy forecasting models to health-tech product development. I speak <strong>six languages</strong>, opening doors to international collaborations with brands, riders, and research teams.</p>
+    <p>I co-host <strong>Radio Fringale</strong>, a cycling podcast covering pro racing with depth and passion. And I built <strong>Coach Center</strong>, a training app for data-driven cyclists.</p>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ CYCLING ═══ -->
+<section class="cycling-section" id="cycling">
+  <div class="fade-in">
+    <div class="section-label">On the Bike</div>
+    <div class="section-title">Cycling</div>
+  </div>
+  <div class="cycling-grid">
+    <div class="cycling-card fade-in">
+      <div class="card-icon">🏁</div>
+      <div class="card-title">Racing — WATT Cycling Club</div>
+      <div class="card-desc">Competing in FFC-licensed club races across Île-de-France. WATT is Paris' second-largest cycling club with 200+ members and pioneering gender parity in French cycling.</div>
+    </div>
+    <div class="cycling-card fade-in">
+      <div class="card-icon">🎙</div>
+      <div class="card-title">Radio Fringale — Podcast</div>
+      <div class="card-desc">Co-hosting a weekly cycling podcast: race previews, rider interviews, historical chronicles, and deep analysis on Spotify, Apple Podcasts, and YouTube.</div>
+      <a href="https://www.youtube.com/results?search_query=radio+fringale" target="_blank" class="card-link">Listen on YouTube →</a>
+    </div>
+    <div class="cycling-card fade-in">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Coach Center — Training App</div>
+      <div class="card-desc">Designed and developed a data-driven cycling training application combining performance analytics, plan generation, and coaching tools.</div>
+      <a href="https://coach-center-xi.vercel.app/" target="_blank" class="card-link">Try Coach Center →</a>
+    </div>
+    <div class="cycling-card fade-in">
+      <div class="card-icon">🤝</div>
+      <div class="card-title">Industry Relationships</div>
+      <div class="card-desc">Strong network across cycling brands and professional riders. Six languages enable international partnerships and media work. Available for brand collaborations and content.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ EVENTS & INTERVIEWS ═══ -->
+<section class="events-section" id="events">
+  <div class="fade-in">
+    <div class="section-label">On the Ground</div>
+    <div class="section-title">Events &amp;<br><span style="color:var(--accent)">Interviews</span></div>
+    <p style="color:var(--muted);max-width:600px;font-size:1rem;line-height:1.7">Covering the biggest races in person — on-the-ground reporting, rider interviews, and behind-the-scenes access for Radio Fringale.</p>
+  </div>
+
+  <div class="events-grid">
+
+    <!-- EVENT 1: PARIS-NICE -->
+    <div class="event-card fade-in">
+      <div class="event-media">
+        <!-- REPLACE-ME: Paris-Nice video or photo
+             YouTube: <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+             Photo:   <div class="event-photo" style="background-image:url('paris-nice.jpg')"></div>
+        -->
+        <div class="event-photo-placeholder">
+          <div class="big">🎬</div>
+          <span>YouTube video or photo</span>
+        </div>
+      </div>
+      <div class="event-content">
+        <div class="event-badge">March 2025 · On Location</div>
+        <div class="event-title">Paris-Nice</div>
+        <div class="event-desc">On-the-ground coverage of the Race to the Sun. Rider interviews, stage analysis, and behind-the-scenes reporting for Radio Fringale.</div>
+        <div class="event-tags">
+          <span class="event-tag">World Tour</span>
+          <span class="event-tag">Interview</span>
+          <span class="event-tag">Stage Race</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENT 2: BOUCLES DRÔME-ARDÈCHE -->
+    <div class="event-card reverse fade-in">
+      <div class="event-media">
+        <!-- REPLACE-ME: Boucles video or photo -->
+        <div class="event-photo-placeholder">
+          <div class="big">🎬</div>
+          <span>YouTube video or photo</span>
+        </div>
+      </div>
+      <div class="event-content">
+        <div class="event-badge">February 2026 · On Location</div>
+        <div class="event-title">Boucles Drôme-Ardèche</div>
+        <div class="event-desc">Covering a stacked field: Seixas, Martinez, Grégoire, Jorgenson, Skjelmose. Dynamic courses and fierce racing previewed on Radio Fringale.</div>
+        <div class="event-tags">
+          <span class="event-tag">Preview</span>
+          <span class="event-tag">French Racing</span>
+          <span class="event-tag">Analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENT 3: INTERVIEW ANTOINE SALAMIN -->
+    <div class="event-card fade-in">
+      <div class="event-media">
+        <!-- REPLACE-ME: Salamin interview video or photo -->
+        <div class="event-photo-placeholder">
+          <div class="big">🎬</div>
+          <span>YouTube video or photo</span>
+        </div>
+      </div>
+      <div class="event-content">
+        <div class="event-badge">Interview · Rider Profile</div>
+        <div class="event-title">Antoine Salamin — Swiss Hope</div>
+        <div class="event-desc">In-depth interview with young Swiss talent Antoine Salamin. His journey, inspirations, idols, career ambitions, and rider profile.</div>
+        <div class="event-tags">
+          <span class="event-tag">Exclusive</span>
+          <span class="event-tag">Rider Interview</span>
+          <span class="event-tag">Youth</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- EVENT 4: TOUR DE FRANCE FRINGALIVE -->
+    <div class="event-card reverse fade-in">
+      <div class="event-media">
+        <!-- REPLACE-ME: Tour de France FringaLive video or photo -->
+        <div class="event-photo-placeholder">
+          <div class="big">🎬</div>
+          <span>YouTube video or photo</span>
+        </div>
+      </div>
+      <div class="event-content">
+        <div class="event-badge">July 2025 · Live Coverage</div>
+        <div class="event-title">Tour de France — FringaLive</div>
+        <div class="event-desc">Daily live YouTube coverage during the Tour de France. Stage debriefs, GC analysis, and real-time reactions from the Radio Fringale team.</div>
+        <div class="event-tags">
+          <span class="event-tag">Live</span>
+          <span class="event-tag">Grand Tour</span>
+          <span class="event-tag">YouTube</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TO ADD MORE EVENTS: copy any event-card block above and paste here. Change text + media. -->
+</section>
+
+<!-- ═══ PODCAST ═══ -->
+<div class="podcast-banner fade-in" id="podcast">
+  <div>
+    <div class="section-label">Podcast</div>
+    <div class="podcast-title">Radio Fringale</div>
+    <div class="podcast-tagline">"Le vélo au menu" — cycling news, debates, interviews &amp; history</div>
+    <div class="podcast-meta">Weekly · Franche-Comté · Association · Est. 2024</div>
+  </div>
+  <div class="podcast-links">
+    <a href="https://open.spotify.com/show/1j0Pdp0fOjog59Ih6mHjD6" target="_blank">Spotify</a>
+    <a href="https://podcasts.apple.com/us/podcast/radio-fringale/id1839305422" target="_blank">Apple Podcasts</a>
+    <a href="https://www.youtube.com/results?search_query=radio+fringale" target="_blank">YouTube</a>
+    <a href="https://www.instagram.com/radiofringale" target="_blank">Instagram</a>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- ═══ RESEARCH ═══ -->
+<section class="research-section" id="research">
+  <div class="fade-in">
+    <div class="section-label">Academic &amp; Professional</div>
+    <div class="section-title">Research &amp;<br>Data Analysis</div>
+  </div>
+  <div class="research-timeline">
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">Current</div>
+      <div class="timeline-title">Data Analysis &amp; Research</div>
+      <div class="timeline-org">Université Paris Dauphine — PSL</div>
+      <div class="timeline-desc">Research and data analysis at one of France's top universities for quantitative methods and economics.</div>
+    </div>
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">Research</div>
+      <div class="timeline-title">Energy Usage Forecasting</div>
+      <div class="timeline-org">LEMNA Laboratory — Université de Nantes</div>
+      <div class="timeline-desc">Analyzed energy usage across Europe. Mathematical forecasting models to support sustainable energy policy.</div>
+    </div>
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">Industry</div>
+      <div class="timeline-title">Health-Tech Product Development</div>
+      <div class="timeline-org">Artidis — Basel, Switzerland</div>
+      <div class="timeline-desc">Cancer diagnosis product at a Swiss health startup. Commercialization strategy and supply chain management.</div>
+    </div>
+    <div class="timeline-item fade-in">
+      <div class="timeline-date">Project</div>
+      <div class="timeline-title">Coach Center — Cycling App</div>
+      <div class="timeline-org">Personal Project</div>
+      <div class="timeline-desc">Full-stack development of a cycling training platform with data-driven coaching tools.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SKILLS ═══ -->
+<section class="skills-section">
+  <div class="fade-in">
+    <div class="section-label">Toolkit</div>
+    <div class="section-title">Skills</div>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-block fade-in">
+      <div class="skill-name">Data &amp; Research</div>
+      <div class="skill-items">
+        <span class="skill-tag">Data Analysis</span>
+        <span class="skill-tag">Mathematical Modeling</span>
+        <span class="skill-tag">Forecasting</span>
+        <span class="skill-tag">Research Methods</span>
+        <span class="skill-tag">Statistics</span>
+      </div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-name">Tech &amp; Development</div>
+      <div class="skill-items">
+        <span class="skill-tag">Full-Stack Dev</span>
+        <span class="skill-tag">App Development</span>
+        <span class="skill-tag">Vercel / Next.js</span>
+        <span class="skill-tag">Data Visualization</span>
+      </div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-name">Cycling &amp; Media</div>
+      <div class="skill-items">
+        <span class="skill-tag">Podcast Production</span>
+        <span class="skill-tag">Race Analysis</span>
+        <span class="skill-tag">Brand Relations</span>
+        <span class="skill-tag">Journalism</span>
+        <span class="skill-tag">Content Creation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LANGUAGES ═══ -->
+<div class="lang-strip">
+  <div class="lang-item"><div class="lang-flag">🇫🇷</div><div class="lang-name">French</div></div>
+  <div class="lang-item"><div class="lang-flag">🇬🇧</div><div class="lang-name">English</div></div>
+  <div class="lang-item"><div class="lang-flag">🇪🇸</div><div class="lang-name">Spanish</div></div>
+  <div class="lang-item"><div class="lang-flag">🇩🇪</div><div class="lang-name">German</div></div>
+  <div class="lang-item"><div class="lang-flag">🇳🇱</div><div class="lang-name">Dutch</div></div>
+  <div class="lang-item"><div class="lang-flag">🇵🇹</div><div class="lang-name">Portuguese</div></div>
+</div>
+
+<!-- ═══ BRANDS ═══ -->
+<section class="brands-section fade-in">
+  <div class="section-label">Network</div>
+  <div class="section-title">Industry Connections</div>
+  <div class="brands-text">Through Radio Fringale, WATT Cycling, and years in the European cycling scene, I've built strong relationships with brands, riders, and teams.</div>
+  <div class="brand-logos">
+    <div class="brand-badge">Cycling Brands</div>
+    <div class="brand-badge">Pro Riders</div>
+    <div class="brand-badge">Media Partners</div>
+    <div class="brand-badge">Race Organizations</div>
+    <div class="brand-badge">Tech Companies</div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- ═══ CONTACT ═══ -->
+<section class="cta-section fade-in" id="contact">
+  <div class="section-label">Let's Talk</div>
+  <div class="section-title">Get in Touch</div>
+  <p class="cta-sub">Looking for a rider, analyst, podcast collaborator, or brand partner?</p>
+  <div class="cta-links">
+    <a href="https://www.linkedin.com/in/lo%C3%AFc-lebrec-565449213/" target="_blank" class="primary">LinkedIn</a>
+    <a href="https://www.instagram.com/radiofringale" target="_blank">Instagram</a>
+    <a href="mailto:radiofringale@gmail.com">Email</a>
+    <a href="https://coach-center-xi.vercel.app/" target="_blank">Coach Center</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Loïc Lebrec</span>
+  <span>
+    <a href="https://www.linkedin.com/in/lo%C3%AFc-lebrec-565449213/" target="_blank">LinkedIn</a> · 
+    <a href="https://www.instagram.com/radiofringale" target="_blank">Radio Fringale</a> · 
+    <a href="https://coach-center-xi.vercel.app/" target="_blank">Coach Center</a>
+  </span>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
