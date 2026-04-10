@@ -93,9 +93,57 @@
   }
   .hero-inner {
     position: relative; z-index: 2;
-    max-width: 900px; width: 100%;
+    max-width: none; width: 100%;
     padding: clamp(2rem, 5vw, 6rem);
     padding-top: 140px;
+  }
+  .hero-main-copy { max-width: 900px; }
+  .page-switch-shell {
+    width: 100%;
+    margin-bottom: 1.4rem;
+    padding: 0;
+    border: none;
+    background: none;
+    box-shadow: none;
+  }
+  .page-switch-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    letter-spacing: 0.17em;
+    text-transform: uppercase;
+    color: rgba(240, 237, 232, 0.75);
+    margin-bottom: 0.7rem;
+  }
+  .page-switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.6rem;
+    width: 100%;
+  }
+  .page-switch a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.35rem, 3.1vw, 2.3rem);
+    letter-spacing: 0.02em;
+    font-weight: 700;
+    text-transform: none;
+    text-decoration: none;
+    min-height: 74px;
+    border: none;
+    color: rgba(243, 243, 239, 0.82);
+    background: none;
+    border-bottom: 1px solid rgba(240, 237, 232, 0.22);
+    transition: all 0.25s ease;
+  }
+  .page-switch a:hover {
+    color: var(--text);
+    border-bottom-color: rgba(91, 156, 246, 0.65);
+  }
+  .page-switch a.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
   }
   .hero-tag {
     font-family: 'JetBrains Mono', monospace;
@@ -386,6 +434,7 @@
     .cta-inner { padding: 80px 20px; }
     footer { flex-direction: column; gap: 12px; text-align: center; }
     .hero, .track-section, .cta-wrap { background-attachment: scroll; }
+    .page-switch { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -409,11 +458,19 @@
 <section class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-inner">
-    <h1>Work<br><span class="accent">with</span> <span class="accent">me.</span></h1>
-    <p class="hero-sub">
-      Team management, media operations, race logistics, and data analysis, from someone
-      who's been in the pit lane, in the press room, and inside the peloton.
-    </p>
+    <div class="page-switch-shell">
+      <div class="page-switch-note">Choose your page</div>
+      <div class="page-switch" aria-label="Main website pages">
+        <a href="index.html">Portfolio</a>
+        <a href="work-with-me.html" class="active" aria-current="page">Work With Me</a>
+      </div>
+    </div>
+    <div class="hero-main-copy">
+      <h1>Work<br><span class="accent">with</span> <span class="accent">me.</span></h1>
+      <p class="hero-sub">
+        Team management, media operations, race logistics, and data analysis, from someone
+        who's been in the pit lane, in the press room, and inside the peloton.
+      </p>
     </div>
   </div>
 </section>

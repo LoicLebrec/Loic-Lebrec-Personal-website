@@ -79,7 +79,71 @@
       z-index: 2;
       padding: clamp(2rem, 5vw, 6rem);
       width: 100%;
+      max-width: none
+    }
+
+    .hero-main-copy {
       max-width: 900px
+    }
+
+    .page-switch-shell {
+      width: 100%;
+      margin-bottom: 1.4rem;
+      padding: 0;
+      border: none;
+      background: none;
+      backdrop-filter: none;
+      box-shadow: none
+    }
+
+    .page-switch-note {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .64rem;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      color: rgba(240, 237, 232, .75);
+      margin-bottom: .7rem
+    }
+
+    .page-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.6rem;
+      width: 100%
+    }
+
+    .page-switch a {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.35rem, 3.1vw, 2.3rem);
+      letter-spacing: .02em;
+      font-weight: 700;
+      text-transform: none;
+      text-decoration: none;
+      min-height: 74px;
+      border: none;
+      color: rgba(243, 243, 239, .82);
+      background: none;
+      border-bottom: 1px solid rgba(240, 237, 232, .22);
+      transition: all .25s ease
+    }
+
+    .page-switch a:hover {
+      color: var(--fg);
+      border-bottom-color: rgba(79, 107, 159, .65)
+    }
+
+    .page-switch a.active {
+      color: var(--fg);
+      border-bottom-color: var(--accent)
+    }
+
+    @media(max-width:640px) {
+      .page-switch {
+        grid-template-columns: 1fr
+      }
     }
 
     .hero-tag {
@@ -1128,8 +1192,16 @@
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
+      <div class="page-switch-shell">
+        <div class="page-switch-note">Choose your page</div>
+        <div class="page-switch" aria-label="Main website pages">
+          <a href="index.html" class="active" aria-current="page">Portfolio</a>
+          <a href="work-with-me.html">Work With Me</a>
+        </div>
+      </div>
+      <div class="hero-main-copy">
       <div class="hero-tag">Cyclist · Data Researcher · Cycling Journalist</div>
-      <h1>Loïc<br><span class="italic">Lebrec</span><span class="accent">.</span></h1>
+      <h1>Loïc Lebrec</span><span class="accent">.</span></h1>
       <p class="hero-sub">Racing with WATT Cycling Club. Analyzing data at Paris Dauphine-PSL. Hosting Radio Fringale.
         Building tools that bridge sport, science &amp; storytelling.</p>
       <nav class="hero-nav">
@@ -1137,8 +1209,8 @@
         <a href="#events">Events</a>
         <a href="#research">Research</a>
         <a href="#contact">Contact</a>
-        <a href="work-with-me.html">Work With Me</a>
       </nav>
+      </div>
     </div>
     <div class="hero-dots">
       <div class="hero-dot active" data-slide="0"></div>
