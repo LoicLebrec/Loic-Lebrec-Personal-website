@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Work With Me — Loïc Lebrec</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0d1216;
+    --bg-elevated: #131820;
+    --bg-card: #171d24;
+    --bg-card-hover: #1d2530;
+    --text: #f3f3ef;
+    --text-secondary: #b7b0a6;
+    --text-dim: #4a5568;
+    --accent: #5b9cf6;
+    --accent-dim: rgba(91, 156, 246, 0.12);
+    --accent-glow: rgba(91, 156, 246, 0.18);
+    --border: #1f2832;
+    --border-light: #283240;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 40px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(13,18,22,0.88);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; color: var(--text);
+    text-decoration: none; letter-spacing: -0.01em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo-back {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    padding: 4px 10px; border-radius: 4px;
+    transition: all 0.25s;
+  }
+  .nav-logo:hover .nav-logo-back {
+    border-color: var(--accent); color: var(--accent);
+  }
+  .nav-links { display: flex; gap: 32px; }
+  .nav-links a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; color: var(--text-secondary);
+    text-decoration: none; text-transform: uppercase;
+    letter-spacing: 0.1em; font-weight: 500;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    position: relative;
+    background-image: url('pictures/DJI_20260331_103100_032.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(13,18,22,0.97) 0%,
+      rgba(13,18,22,0.65) 45%,
+      rgba(13,18,22,0.25) 75%,
+      rgba(13,18,22,0.45) 100%
+    );
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    max-width: 900px; width: 100%;
+    padding: clamp(2rem, 5vw, 6rem);
+    padding-top: 140px;
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.73rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: slideUp 0.8s ease forwards 0.3s;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 7vw, 7rem);
+    font-weight: 900; line-height: 0.92;
+    letter-spacing: -0.03em; margin-bottom: 1.5rem;
+    opacity: 0; animation: slideUp 0.8s ease forwards 0.5s;
+  }
+  .hero h1 .italic { font-style: italic; font-weight: 400; }
+  .hero h1 .accent { color: var(--accent); }
+  .hero-sub {
+    font-size: clamp(1rem, 1.8vw, 1.2rem);
+    font-weight: 300; color: rgba(243,243,239,0.7);
+    max-width: 560px; margin-bottom: 2.5rem;
+    opacity: 0; animation: slideUp 0.8s ease forwards 0.7s;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; flex-wrap: wrap;
+    opacity: 0; animation: slideUp 0.8s ease forwards 0.9s;
+    padding-bottom: clamp(2rem, 5vw, 6rem);
+  }
+  .stat { display: flex; flex-direction: column; }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; color: var(--accent); line-height: 1.1;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--text-dim); margin-top: 4px;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* FADE IN ON SCROLL */
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* SECTION LAYOUT */
+  .section-wrap { max-width: 1100px; margin: 0 auto; padding: 100px 40px; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 700; line-height: 1.15;
+    letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+  .section-title .italic { font-style: italic; font-weight: 400; }
+  .section-desc {
+    font-size: 1rem; color: var(--text-secondary);
+    max-width: 540px; line-height: 1.7; margin-bottom: 56px;
+  }
+
+  /* DIVIDER */
+  .divider { border: none; height: 1px; background: var(--border); margin: 0; }
+
+  /* PHOTO BAND */
+  .photo-band {
+    width: 100%; height: 360px;
+    position: relative; overflow: hidden;
+  }
+  .photo-band img {
+    width: 100%; height: 100%;
+    object-fit: cover; filter: brightness(0.3);
+  }
+  .photo-band-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right,
+      rgba(13,18,22,0.95) 0%,
+      transparent 40%,
+      transparent 60%,
+      rgba(13,18,22,0.95) 100%
+    );
+  }
+
+  /* OFFER GRID */
+  .offer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .offer-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px 32px;
+    transition: all 0.35s ease;
+    position: relative; overflow: hidden;
+  }
+  .offer-card:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-light);
+    transform: translateY(-2px);
+  }
+  .offer-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .offer-card:hover::before { transform: scaleX(1); }
+  .offer-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem; color: var(--accent);
+    opacity: 0.5; margin-bottom: 18px; display: block;
+    letter-spacing: 0.12em;
+  }
+  .offer-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700;
+    margin-bottom: 12px; letter-spacing: -0.01em;
+  }
+  .offer-card p {
+    font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65;
+  }
+
+  /* LANGUAGES */
+  .lang-section {
+    background: var(--bg-elevated);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+  }
+  .lang-card {
+    text-align: center; padding: 28px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    transition: all 0.3s ease;
+  }
+  .lang-card:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+  .lang-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem; color: var(--accent);
+    display: block; margin-bottom: 10px; letter-spacing: 0.05em;
+  }
+  .lang-name {
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .lang-level {
+    font-size: 0.68rem; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.1em; margin-top: 4px;
+  }
+
+  /* TRACK RECORD */
+  .track-section {
+    background-image: linear-gradient(rgba(13,18,22,0.94), rgba(13,18,22,0.98)),
+      url('pictures/watt race 54.jpg');
+    background-size: cover; background-position: center;
+    background-attachment: fixed;
+  }
+  .track-list { display: flex; flex-direction: column; }
+  .track-item {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    align-items: center; gap: 24px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--border);
+    transition: padding 0.25s;
+  }
+  .track-item:hover { padding-left: 12px; }
+  .track-context {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .track-title { font-size: 0.95rem; font-weight: 500; }
+  .track-detail { font-size: 0.8rem; color: var(--text-secondary); margin-top: 3px; }
+  .track-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .track-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--accent);
+    background: var(--accent-dim);
+    padding: 4px 10px; border-radius: 4px;
+  }
+
+  /* HOW IT WORKS */
+  .process-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+  }
+  .process-step {
+    background: var(--bg-card); padding: 40px 32px;
+  }
+  .process-step:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+  .process-step:last-child  { border-radius: 0 var(--radius) var(--radius) 0; }
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem; color: var(--accent);
+    opacity: 0.25; line-height: 1; margin-bottom: 20px;
+  }
+  .process-step h3 {
+    font-size: 0.95rem; font-weight: 600;
+    margin-bottom: 10px; letter-spacing: -0.01em;
+  }
+  .process-step p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+
+  /* CTA */
+  .cta-wrap {
+    background-image: linear-gradient(rgba(13,18,22,0.78), rgba(13,18,22,0.92)),
+      url('pictures/watt race 43.jpg');
+    background-size: cover; background-position: center;
+    background-attachment: fixed;
+  }
+  .cta-inner {
+    max-width: 1100px; margin: 0 auto;
+    padding: 120px 40px; text-align: center;
+  }
+  .cta-inner .section-title { max-width: 600px; margin: 0 auto 16px; }
+  .cta-inner .section-desc { max-width: 480px; margin: 0 auto 40px; }
+  .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-flex; align-items: center;
+    padding: 13px 30px; border-radius: var(--radius-sm);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; font-weight: 500;
+    text-decoration: none; text-transform: uppercase;
+    letter-spacing: 0.08em; transition: all 0.3s ease;
+  }
+  .btn-primary {
+    background: var(--accent); color: #fff;
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover {
+    background: #7ab3f8; border-color: #7ab3f8;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+  }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border-light);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    max-width: 1100px; margin: 0 auto;
+    padding: 32px 40px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  footer a { color: var(--text-secondary); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { gap: 16px; }
+    .nav-links a { font-size: 0.65rem; }
+    .section-wrap { padding: 80px 20px; }
+    .hero-inner { padding: 120px 20px 80px; }
+    .hero-stats { gap: 24px; }
+    .lang-grid { grid-template-columns: repeat(3, 1fr); }
+    .process-grid { grid-template-columns: 1fr; gap: 2px; }
+    .process-step:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+    .process-step:last-child  { border-radius: 0 0 var(--radius) var(--radius); }
+    .track-item { grid-template-columns: 1fr; gap: 8px; }
+    .photo-band { height: 220px; }
+    .cta-inner { padding: 80px 20px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+    .hero, .track-section, .cta-wrap { background-attachment: scroll; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <span class="nav-logo-back">← Portfolio</span>
+    Loïc Lebrec
+  </a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#languages">Languages</a>
+    <a href="#track-record">Track Record</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div class="hero-tag">Available for the 2025–2026 season</div>
+    <h1>Work<br><span class="italic">with</span> <span class="accent">me.</span></h1>
+    <p class="hero-sub">
+      Team management, media operations, race logistics, and data analysis — from someone
+      who's been in the pit lane, in the press room, and inside the peloton.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-number">6</span>
+        <span class="stat-label">Languages</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">CX</span>
+        <span class="stat-label">Pit Crew</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">WT</span>
+        <span class="stat-label">Press Coverage</span>
+      </div>
+      <div class="stat">
+        <span class="stat-number">PSL</span>
+        <span class="stat-label">Data &amp; Economics</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- WHAT I BRING -->
+<div id="services">
+  <div class="section-wrap">
+    <div class="section-label fade-in">What I Bring</div>
+    <h2 class="section-title fade-in">Operations, communications<br>&amp; <span class="italic">data</span> — on race day.</h2>
+    <p class="section-desc fade-in">
+      I've worked on race day — CX pit crew, rider coordination, event coverage.
+      Here's what I can do for your team.
+    </p>
+
+    <div class="offer-grid">
+      <div class="offer-card fade-in">
+        <span class="offer-num">01</span>
+        <h3>Multilingual Communications</h3>
+        <p>Press conferences, sponsor meetings, rider briefings, race-day radio — I work in
+          French, English, Spanish, German, Dutch, and Portuguese. Your team communicates
+          clearly wherever the race goes.</p>
+      </div>
+      <div class="offer-card fade-in">
+        <span class="offer-num">02</span>
+        <h3>Team Management & Logistics</h3>
+        <p>Race program planning, travel coordination, scheduling, team communication. From
+          race entries and federation paperwork to hotel logistics and staff coordination.</p>
+      </div>
+      <div class="offer-card fade-in">
+        <span class="offer-num">03</span>
+        <h3>Data & Performance Analysis</h3>
+        <p>Economics degree from Paris Dauphine-PSL with a focus on data analysis and forecasting.
+          Race analytics, performance dashboards, budget forecasting, and season planning.</p>
+      </div>
+      <div class="offer-card fade-in">
+        <span class="offer-num">04</span>
+        <h3>Media & Press Relations</h3>
+        <p>I've covered events on the ground and co-host a weekly cycling podcast. I know how
+          media works and can help with press communications, interviews, and team visibility.</p>
+      </div>
+      <div class="offer-card fade-in">
+        <span class="offer-num">05</span>
+        <h3>Pit Crew & Mechanical Support</h3>
+        <p>Pit crew experience at CX World Cup races. Wheel changes, bike swaps, feed zones,
+          pressure washing — hands-on work on race day, not just behind a desk.</p>
+      </div>
+      <div class="offer-card fade-in">
+        <span class="offer-num">06</span>
+        <h3>Sponsor & Brand Liaison</h3>
+        <p>Contacts across cycling brands, riders, and race organizations. Speaking six languages
+          helps when working with European sponsors and partners across different markets.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO BAND -->
+<div class="photo-band">
+  <img src="pictures/watt race 30.jpg" alt="Peloton in motion">
+  <div class="photo-band-overlay"></div>
+</div>
+
+<!-- LANGUAGES -->
+<div id="languages" class="lang-section">
+  <div class="section-wrap">
+    <div class="section-label fade-in">The Advantage</div>
+    <h2 class="section-title fade-in">Six languages.<br><span class="italic">One team voice.</span></h2>
+    <p class="section-desc fade-in">
+      Cycling is an international sport. A rider who can't understand the DS,
+      a sponsor call lost in translation, a federation form filled wrong — these cost real results.
+    </p>
+    <div class="lang-grid">
+      <div class="lang-card fade-in">
+        <span class="lang-code">FR</span>
+        <div class="lang-name">French</div>
+        <div class="lang-level">Native</div>
+      </div>
+      <div class="lang-card fade-in">
+        <span class="lang-code">EN</span>
+        <div class="lang-name">English</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+      <div class="lang-card fade-in">
+        <span class="lang-code">ES</span>
+        <div class="lang-name">Spanish</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+      <div class="lang-card fade-in">
+        <span class="lang-code">DE</span>
+        <div class="lang-name">German</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+      <div class="lang-card fade-in">
+        <span class="lang-code">NL</span>
+        <div class="lang-name">Dutch</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+      <div class="lang-card fade-in">
+        <span class="lang-code">PT</span>
+        <div class="lang-name">Portuguese</div>
+        <div class="lang-level">Fluent</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TRACK RECORD -->
+<div id="track-record" class="track-section">
+  <div class="section-wrap">
+    <div class="section-label fade-in">Track Record</div>
+    <h2 class="section-title fade-in">Where I've worked,<br><span class="italic">raced, and reported.</span></h2>
+    <p class="section-desc fade-in">
+      Every line below is something I've done — in the field, on race day, under pressure.
+    </p>
+
+    <div class="track-list">
+      <div class="track-item fade-in">
+        <span class="track-context">CX World Cup</span>
+        <div>
+          <div class="track-title">Pit Crew — European CX Race Tour</div>
+          <div class="track-detail">Wheel changes, bike swaps, mechanical support, and athlete logistics across international CX races</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">Mechanic</span>
+          <span class="track-tag">Logistics</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">CX Europe</span>
+        <div>
+          <div class="track-title">Athlete Manager — CX European Tour</div>
+          <div class="track-detail">Coordinated nutrition, race programs, travel, and cross-language communication for elite amateur and pro riders</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">Management</span>
+          <span class="track-tag">6 Languages</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">World Tour</span>
+        <div>
+          <div class="track-title">Press Coverage — Paris-Nice 2026</div>
+          <div class="track-detail">On-the-ground stage coverage at the Race to the Sun. Rider interviews and race analysis for Radio Fringale</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">Press</span>
+          <span class="track-tag">World Tour</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">ASO</span>
+        <div>
+          <div class="track-title">In-Car Coverage — Van Rysel Roubaix Team Car</div>
+          <div class="track-detail">Race-day access inside the team car at Paris-Roubaix. Behind-the-scenes coverage for Radio Fringale</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">ASO</span>
+          <span class="track-tag">Media</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">Podcast</span>
+        <div>
+          <div class="track-title">Co-Host — Radio Fringale</div>
+          <div class="track-detail">Weekly cycling podcast. Race analysis, interviews, and historical episodes across all major platforms</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">Content</span>
+          <span class="track-tag">Production</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">Academic</span>
+        <div>
+          <div class="track-title">Data Analysis — Paris Dauphine-PSL</div>
+          <div class="track-detail">Economics degree specializing in data analysis, mathematical modeling, and forecasting</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">Data</span>
+          <span class="track-tag">Economics</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">Project</span>
+        <div>
+          <div class="track-title">Coach Center — Cycling Training App</div>
+          <div class="track-detail">Built a full-stack data-driven coaching platform with performance analytics and training plan generation</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">Dev</span>
+          <span class="track-tag">App</span>
+        </div>
+      </div>
+      <div class="track-item fade-in">
+        <span class="track-context">Racing</span>
+        <div>
+          <div class="track-title">FFC Racer — WATT Cycling Club, Nantes NDVS, UVM</div>
+          <div class="track-detail">Club and national-level racing in France and US collegiate cycling. Active FFC license</div>
+        </div>
+        <div class="track-tags">
+          <span class="track-tag">FFC</span>
+          <span class="track-tag">Racer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- HOW IT WORKS -->
+<div>
+  <div class="section-wrap">
+    <div class="section-label fade-in">How It Works</div>
+    <h2 class="section-title fade-in" style="margin-bottom: 48px;">Simple.<br><span class="italic">Direct. Flexible.</span></h2>
+
+    <div class="process-grid">
+      <div class="process-step fade-in">
+        <div class="step-num">01</div>
+        <h3>Reach out</h3>
+        <p>Tell me what your team needs — season-long support, specific race coverage,
+          event logistics, or a data project. No commitment for a first conversation.</p>
+      </div>
+      <div class="process-step fade-in">
+        <div class="step-num">02</div>
+        <h3>Scope the role</h3>
+        <p>We define the engagement together — single-race assignment to full season.
+          I adapt to your structure: team staff, freelance, consultant, embedded.</p>
+      </div>
+      <div class="process-step fade-in">
+        <div class="step-num">03</div>
+        <h3>Get to work</h3>
+        <p>I integrate with your team from day one. I've worked in high-pressure environments
+          across multiple countries and languages.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- CTA -->
+<div id="contact" class="cta-wrap">
+  <div class="cta-inner">
+    <div class="section-label">Let's Talk</div>
+    <h2 class="section-title">Your next race is coming.<br><span class="italic">Let's make it run smoother.</span></h2>
+    <p class="section-desc">
+      Open to Continental, development, and amateur teams. Full-season roles,
+      race-specific engagements, or project-based consulting.
+    </p>
+    <div class="cta-buttons">
+      <a href="mailto:loic.lebrecm@gmail.com" class="btn btn-primary">Email Me</a>
+      <a href="https://www.linkedin.com/in/lo%C3%AFc-lebrec-565449213/" class="btn btn-secondary" target="_blank">LinkedIn</a>
+      <a href="index.html" class="btn btn-secondary">Full Portfolio</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Loïc Lebrec</span>
+  <div style="display: flex; gap: 24px;">
+    <a href="https://www.linkedin.com/in/lo%C3%AFc-lebrec-565449213/" target="_blank">LinkedIn</a>
+    <a href="https://www.instagram.com/radiofringale" target="_blank">Radio Fringale</a>
+    <a href="https://coach-center-xi.vercel.app/" target="_blank">Coach Center</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
